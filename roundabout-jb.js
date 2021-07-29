@@ -1,10 +1,11 @@
 // ==UserScript==
-// @name         Roundabout Junction Box
-// @version      1.0
+// @name         WME Roundabout Junction Box
+// @version      1.0.1.1
 // @author       r0den
 // @match        https://*.waze.com/*editor*
 // @match        https://waze.com/*editor*
-// @icon         https://www.google.com/s2/favicons?domain=waze.com
+// @icon         https://www.waze.com/favicon.ico
+// @description  Make a Junction Box same geometry as your roundabout
 // @grant        none
 // ==/UserScript==
 
@@ -114,8 +115,8 @@
                 let selectedJB = W.selectionManager.getSelectedFeatures()[0].layer;
                 selectedJB.geometry = evt.action.initialGeometry;
                 let featureToDraw = selectedJB._featureMap[evt.action.bigJunction.attributes.id];
+                selectedJB.removeFeatures(featureToDraw);
                 featureToDraw.geometry = polygon;
-                selectedJB.removeAllFeatures();
                 selectedJB.addFeatures(featureToDraw);
 
                 roundaboutJunctionsConverters[evt.action.bigJunction.attributes.id] = true;
