@@ -1,0 +1,9 @@
+{
+    "compilerOptions": {
+        "module": "esnext",
+        "target": "ES6",
+        "typeRoots": [
+            "@types"
+        ]
+    }
+}
