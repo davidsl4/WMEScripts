@@ -1,0 +1,35 @@
+{
+    "save": {
+        "changes_log": {
+            "actions": {
+                "AddRoundaboutJunction": "Added roundabout junction",
+                "NormalizeRoundaboutTurns": "Normalized roundabout turns",
+                "PasteJunctionBoxProps": "Pasted junction box properties"
+            }
+        }
+    },
+    "edit": {
+        "big_junction": {
+            "convert_to_roundabout": "Convert to roundabout junction",
+            "copy_props": "Copy junction properties",
+            "paste_props": "Paste junction properties",
+            "errors": {
+                "locked": "The junction box is locked.",
+                "segments_locked": "Some of the segments are locked.",
+                "turn_feature_locked": "Some of the turns have guidance instructions. Editing turn guidance unlocks at a higher level.",
+                "no_saved_props": "No copied junction box properties to paste.",
+                "props_already_saved": "This junction box properties already copied and saved, you can safely remove the junction box.",
+                "no_changes": "This junction box properties are identical to what you have copied.",
+                "missing_entrances_exits": "Some of the entrances or exits are missing. Make sure you've included all of them in the junction box."
+            },
+            "override_copied_props": "There are already copied junction box properties, copying again will override the already copied properties.\nDo you want to override the copied properties?"
+        },
+        "segment": {
+            "normalize_roundabout_turns": "Normalize turns at node %{node}",
+            "normalize_roundabout_turns_disabled": {
+                "not_connected_to_jb": "This node is not connected to a junction box. Add a junction box before normalizing instructions.",
+                "exit_count_not_supported": "This roundabout has %{exit_count} exit(s)."
+            }
+        }
+    }
+}

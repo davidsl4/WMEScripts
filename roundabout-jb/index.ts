@@ -1,5 +1,10 @@
 import Translations from "./translations.js";
 
+import JunctionBoxEditPanelStylesModule from './junctionBoxEditPanelStyles.m.js';
+import RoundaboutJBGeometryModule from './roundaboutJBGeometry.m.js';
+import NormalizeRoundaboutInstructionsModule from './normalizeRoundaboutInstructions.m.js';
+import JunctionBoxClonerModule from './junctionBoxCloner.m.js';
+
 (async () => {
     console.log("[Roundabout JB] Loading script");
 
@@ -8,11 +13,15 @@ import Translations from "./translations.js";
         await new Promise(resolve => setTimeout(resolve, 100));
     }
 
-    const locale = I18n.locale in Translations ? I18n.locale : "en";
-    const localeTranslations = Translations[locale];
+    const translations = new Translations();
 
-    console.log("[Roundabout JB] Script loaded | Locale: %s", locale);
+    const ActionClass = require("Waze/Action/AddAlternateStreet").__proto__;
 
-    (await import("./roundaboutJBGeometry.m.js")).default(localeTranslations);
-    (await import("./normalizeRoundaboutInstructions.m.js")).default(localeTranslations);
+    console.log("[Roundabout JB] Script loaded | Locale: %s", translations.locale);
+
+    // run all modules
+    JunctionBoxEditPanelStylesModule();
+    RoundaboutJBGeometryModule(translations);
+    NormalizeRoundaboutInstructionsModule(translations, ActionClass);
+    JunctionBoxClonerModule(translations, ActionClass);
 })();

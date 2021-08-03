@@ -1,4 +1,4 @@
-import type { Translation } from './translations';
+import type Translation from './translations';
 
 
 function RDBExtractPolygon(junctionID: number) {
@@ -75,18 +75,19 @@ export default function(translations: Translation) {
                 return;
 
             // get the last action and change the description and the geometry
-            action._description = translations.actions.roundaboutJBAdded;
+            action._description = translations.translate("save.changes_log.actions.AddRoundaboutJunction");;
             action.initialGeometry = action.bigJunction.attributes.geometry = polygon;
 
             // redraw the feature
-            let selectedJB = W.selectionManager.getSelectedFeatures()[0].layer;
-            selectedJB.geometry = polygon;
-            let featureToDraw = selectedJB._featureMap[action.bigJunction.attributes.id];
-            selectedJB.removeFeatures(featureToDraw);
+            let selectedJB = W.selectionManager.getSelectedFeatures()[0];
+            let selectedJBLayer = selectedJB.layer;
+            selectedJBLayer.geometry = polygon;
+            let featureToDraw = selectedJBLayer._featureMap[selectedJB.model.attributes.id];
+            selectedJBLayer.removeFeatures(featureToDraw);
             featureToDraw.geometry = polygon;
-            selectedJB.addFeatures(featureToDraw);
+            selectedJBLayer.addFeatures(featureToDraw);
 
-            cachedConverters[jID] = true;
+            cachedConverters[selectedJB.model.attributes.id] = true;
             return true;
         }
     }
@@ -102,7 +103,7 @@ export default function(translations: Translation) {
     function selectedFeaturesChangedCallback({ selected }) {
         // if no selected features, then we don't need to do anything
         if (selected.length == 0)
-        return;
+            return;
 
         // check if the selected model type is bigJunction
         if (selected[0].model.type != "bigJunction")
@@ -115,7 +116,7 @@ export default function(translations: Translation) {
 
         let converter = cachedConverters[selected[0].model.attributes.id];
         if (typeof converter === "undefined")
-        return;
+            return;
 
         // get the junction actions DOM element
         let junctionActionsDOM = document.getElementById("big-junction-edit-general").getElementsByClassName("junction-actions")[0] as HTMLElement;
@@ -126,14 +127,15 @@ export default function(translations: Translation) {
         // create in runtime a button with classes: action-button select-short-segments waze-btn waze-btn-smaller waze-btn-white
         let convertToRoundaboutJBButtonDOM = document.createElement("button");
         convertToRoundaboutJBButtonDOM.classList.add("action-button", "select-short-segments", "waze-btn", "waze-btn-smaller", "waze-btn-white");
-        convertToRoundaboutJBButtonDOM.innerHTML = translations.convertToRoundaboutJB;
+        convertToRoundaboutJBButtonDOM.innerHTML = translations.translate("edit.big_junction.convert_to_roundabout");
         if (converter === true)
         {
             convertToRoundaboutJBButtonDOM.disabled = true;
         }
         else {
+            let id = selected[0].model.attributes.id;
             convertToRoundaboutJBButtonDOM.onclick = function() {
-                cachedConverters[selected[0].model.attributes.id]();
+                cachedConverters[id]();
                 convertToRoundaboutJBButtonDOM.disabled = true;
             }
         }

@@ -4,6 +4,14 @@
         "target": "ES6",
         "typeRoots": [
             "@types"
-        ]
+        ],
+        "moduleResolution": "node",
+        "resolveJsonModule": true,
+        "lib": [
+            "dom",
+            "es2019"
+        ],
+        "esModuleInterop": true,
+        "removeComments": true
     }
 }
