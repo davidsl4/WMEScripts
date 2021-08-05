@@ -4,14 +4,16 @@ interface RecusriveStringObject {
 
 import EnglishTranslations from './translations/en.js';
 import HebrewTranslations from './translations/he.js';
+import RussianTranslations from './translations/ru.js';
 
-export type Languages = "en"|"he";
+export type Languages = "en"|"he"|"ru";
 
 const translations: {
     [key in Languages]: RecusriveStringObject;
 } = {
     "en": EnglishTranslations,
     "he": HebrewTranslations,
+    "ru": RussianTranslations
 };
 
 class Translations {

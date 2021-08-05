@@ -6,6 +6,8 @@ import NormalizeRoundaboutInstructionsModule from './normalizeRoundaboutInstruct
 import JunctionBoxClonerModule from './junctionBoxCloner.m.js';
 
 (async () => {
+    const version = [1,0,1,true];
+
     console.log("[Roundabout JB] Loading script");
 
     while(!window.hasOwnProperty("require"))

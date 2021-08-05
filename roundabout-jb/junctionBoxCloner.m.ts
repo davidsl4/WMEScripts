@@ -1,7 +1,6 @@
 import type Translation from './translations';
-import memorize from './utils/memorize.js';
 
-import { canCloneJunctionBox, CanCloneJunctionBoxResult, getAllJunctionBoxTurns, getPossibleTurnsBetween, getJunctionBoxConnectedSegments } from './utils/JunctionBoxUtils.js';
+import { canCloneJunctionBox, CanCloneJunctionBoxResult, getAllJunctionBoxTurns, getJunctionBoxConnectedSegments } from './utils/JunctionBoxUtils.js';
 
 interface JunctionBoxClonedAttributes {
     name: string,
@@ -98,8 +97,7 @@ export default function(translations: Translation, Action) {
             return {
                 _objectType: this.object.getType(),
                 action: "UPDATE",
-                attributes: attributes,
-                _subActions: this.subActions.map(subAction => subAction.serialize())
+                attributes: attributes
             }
         }
     }
