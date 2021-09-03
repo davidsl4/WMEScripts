@@ -1,9 +1,0 @@
-# NodeJS modules
-node_modules
-
-# Compiled scripts
-build
-
-# JS files (except those in the docs directory)
-*.js
-!docs/**/*.js
