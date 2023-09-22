@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name        WME Roundabout Junction Box
-// @version     1.2.1694973224452
+// @version     1.2.1695373838349
 // @author      r0den
 // @description Provide some useful tools for maintaining Junction Boxes
 // @match       https://*.waze.com/*editor*
@@ -7741,8 +7741,8 @@ function getListOfUniqueNodesBySegments(segIDs) {
     return nodeIDs;
 }
 function canEditTurnGuidance(segment) {
-    const country = segment.getAddress().getCountry();
-    const currentUserRank = unsafeWindow.W.loginManager.user.rank;
+    const country = segment.getAddress().getCountry().attributes;
+    const currentUserRank = unsafeWindow.W.loginManager.user.getRank();
     const editGuidanceRank = country.allowEditingTurnGuidanceRank;
     return currentUserRank >= editGuidanceRank;
 }
@@ -8001,6 +8001,8 @@ function checkCanJunctionBoxBeCloned(junctionBox, turns) {
   // TODO change junction box to the desired type once it is defined
   // check if the junction box is locked
   if (junctionBox.attributes.rank > unsafeWindow.W.loginManager.user.rank) return CanJunctionBoxBeCloned.JunctionBoxIsLocked; // check if some of the junction box turns have guidance and if so can the user edit them
+  // const invalidSeg = turns.find(turn => turn.turnData.turnGuidance !== null && !canEditTurnGuidance(getSegmentFromVertex(turn.toVertex)));
+  // if (invalidSeg) console.warn('This segment has turn guidance you can\'t edit', invalidSeg);
 
   if (turns.some(turn => turn.turnData.turnGuidance !== null && !canEditTurnGuidance(getSegmentFromVertex(turn.toVertex)))) return CanJunctionBoxBeCloned.SomeTurnsHaveInstructions; // by default we can clone the junction box
 
