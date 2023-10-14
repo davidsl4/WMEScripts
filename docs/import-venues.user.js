@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name        WME Import Venues
-// @version     1.2.1697287389031
+// @version     1.2.1697287791009
 // @author      r0den
 // @description Adds the ability to import a list of venues to the WME
 // @match       https://*.waze.com/*editor*
@@ -16295,7 +16295,7 @@ class Translations {
             // for each language in the list, download the translations
             const translations = {};
             yield Promise.all(languages.map((language) => __awaiter(this, void 0, void 0, function* () {
-                const translation = yield this.otaClient.getFileTranslations('/roundabout-jb.json', language);
+                const translation = yield this.otaClient.getFileTranslations('/import-venues.json', language);
                 translations[language] = translation;
             })));
             this._translations = Object.assign(Object.assign({}, this.translations), translations);
