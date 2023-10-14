@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name        WME Import Venues
-// @version     1.2.1697288278253
+// @version     1.2.1697306214610
 // @author      r0den
 // @description Adds the ability to import a list of venues to the WME
 // @match       https://*.waze.com/*editor*
@@ -19868,16 +19868,10 @@ const VerticalStack = /*#__PURE__*/createStyled("div",  true ? {
 function FileDragAndDropZone(props) {
   const [isDraggingOverZone, setIsDraggingOverZone] = (0,react_module_wrapper.useState)(false);
   const [isProcessing, setIsProcessing] = (0,react_module_wrapper.useState)(false);
+  const fileInputElRef = (0,react_module_wrapper.useRef)(document.createElement('input'));
 
-  const handleDropEvent = async e => {
-    // Prevent default behavior (Prevent file from being opened)
-    e.preventDefault();
-    if (isProcessing) return;
-    setIsDraggingOverZone(false); // process only the first file, and if there are none, return
-
-    const file = e.dataTransfer.files[0];
-    if (!file) return; // if the file is not a csv file, return
-
+  const handleFileSelected = async file => {
+    // if the file is not a csv file, return
     if (file.type !== 'text/csv') return;
     setIsProcessing(true);
     const csv = await file.text();
@@ -19886,13 +19880,38 @@ function FileDragAndDropZone(props) {
     props.onFileUploaded?.(venues, file.name, md5(csv));
   };
 
+  const handleDropEvent = async e => {
+    // Prevent default behavior (Prevent file from being opened)
+    e.preventDefault();
+    if (isProcessing) return;
+    setIsDraggingOverZone(false); // process only the first file, and if there are none, return
+
+    const file = e.dataTransfer.files[0];
+    if (!file) return;
+    await handleFileSelected(file);
+  };
+
+  const handleClickOnContainer = () => {
+    fileInputElRef.current.type = 'file';
+    fileInputElRef.current.accept = 'text/csv';
+    fileInputElRef.current.click();
+  };
+
+  (0,react_module_wrapper.useEffect)(() => {
+    fileInputElRef.current.addEventListener('change', e => {
+      const file = e.target.files?.[0];
+      if (!file) return;
+      handleFileSelected(file);
+    });
+  }, []);
   return unsafeWindow.React.createElement(DragAndDropContainer, {
     className: dist_clsx(!isProcessing && isDraggingOverZone && 'dragging-in-progress'),
     onDragEnter: setIsDraggingOverZone.bind(this, true),
     onDragLeave: setIsDraggingOverZone.bind(this, false),
     onDrop: handleDropEvent,
     onDragOver: e => e.preventDefault() // Prevent default behavior (Prevent file from being opened)
-
+    ,
+    onClick: handleClickOnContainer
   }, isProcessing ? unsafeWindow.React.createElement(WzSpinner, null) : unsafeWindow.React.createElement(unsafeWindow.React.Fragment, null, unsafeWindow.React.createElement("i", {
     className: "w-icon w-icon-attachment",
     style: {
