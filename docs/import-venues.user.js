@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name        WME Import Venues
-// @version     1.2.1697286927821
+// @version     1.2.1697287389031
 // @author      r0den
 // @description Adds the ability to import a list of venues to the WME
 // @match       https://*.waze.com/*editor*
@@ -16235,7 +16235,7 @@ class Translations {
         this.fallbackLocale = "";
         this.separatorChar = ".";
         this._locale = locale;
-        this.otaClient = new (out_default())('a891bc24af0f9f9a9d02088031c', {
+        this.otaClient = new (out_default())('106d446484bfb41381f3b08031c', {
             httpClient: {
                 get(url) {
                     return __awaiter(this, void 0, void 0, function* () {
