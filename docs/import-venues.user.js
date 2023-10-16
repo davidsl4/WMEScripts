@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name        WME Import Venues
-// @version     1.2.1697311225953
+// @version     1.2.1697458119723
 // @author      r0den
 // @description Adds the ability to import a list of venues to the WME
 // @match       https://*.waze.com/*editor*
@@ -20000,6 +20000,7 @@ function VenueListItem({
       lat: point.y
     };
   }, [lat, lon]);
+  const lastUsedRenderIntent = (0,react_module_wrapper.useRef)(null);
 
   const centerMapAtVenue = () => {
     if (unsafeWindow.W.map.getZoom() <= 17) {
@@ -20038,10 +20039,22 @@ function VenueListItem({
     unsafeWindow.W.selectionManager.setSelectedModels([venue]);
   };
 
+  const updateFeatureRenderIntent = newIntent => {
+    const layer = unsafeWindow.W.map.venueLayer;
+    const feature = layer.featureMap.get(wmeVenueId);
+    if (!feature || feature.renderIntent === newIntent) return;
+    lastUsedRenderIntent.current = feature.renderIntent;
+    layer.drawFeature(feature, newIntent);
+  };
+
+  const restoreFeatureRenderIntent = () => updateFeatureRenderIntent(lastUsedRenderIntent.current);
+
   return unsafeWindow.React.createElement(WzCard, {
     elevation: 4,
     className: "list-item-card",
-    onClick: selectVenueOnMap
+    onClick: selectVenueOnMap,
+    onMouseOver: updateFeatureRenderIntent.bind(null, 'highlight'),
+    onMouseLeave: restoreFeatureRenderIntent
   }, unsafeWindow.React.createElement("div", {
     className: "list-item-card-layout"
   }, unsafeWindow.React.createElement("div", {
