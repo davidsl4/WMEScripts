@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name        WME Import Objects
-// @version     1.2.1697480172652
+// @version     1.2.1697483444043
 // @author      r0den
 // @description Adds the ability to import a list of venues to the WME
 // @match       https://*.waze.com/*editor*
@@ -16301,7 +16301,7 @@ class Translations {
             this._translations = Object.assign(Object.assign({}, this.translations), translations);
             this._locale = this.getLocaleOrDefault(this.locale);
             // log that we downloaded the translations
-            console.log(`[Import Venues] Downloaded translations for the script`);
+            console.log(`[Import Objects] Downloaded translations for the script`);
         });
     }
 }
