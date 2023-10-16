@@ -1,6 +1,6 @@
 // ==UserScript==
-// @name        WME Import Venues
-// @version     1.2.1697477994272
+// @name        WME Import Objects
+// @version     1.2.1697478090485
 // @author      r0den
 // @description Adds the ability to import a list of venues to the WME
 // @match       https://*.waze.com/*editor*
