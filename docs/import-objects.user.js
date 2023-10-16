@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name        WME Import Objects
-// @version     1.2.1697483444043
+// @version     1.2.1697483482600
 // @author      r0den
 // @description Adds the ability to import a list of venues to the WME
 // @match       https://*.waze.com/*editor*
@@ -20878,7 +20878,7 @@ function registerScriptSidebarTab() {
     tabPane
   } = unsafeWindow.W.userscripts.registerSidebarTab("LQSrBlTs15");
   tabLabel.innerHTML = `<span class="fa fa-upload"></> <span class="fa fa-map-marker"></span>`;
-  tabLabel.title = 'Import Venues';
+  tabLabel.title = 'Import Objects';
   unsafeWindow.ReactDOM.render(unsafeWindow.React.createElement(TabPaneComponent, null), tabPane);
   unsafeWindow.W.userscripts.waitForElementConnected(tabPane).then(() => {
     // all tab panes are inserted with an ugly padding to make them look consistent
