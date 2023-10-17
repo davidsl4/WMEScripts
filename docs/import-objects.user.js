@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name        WME Import Objects
-// @version     1.2.1697483482600
+// @version     1.2.1697569821912
 // @author      r0den
 // @description Adds the ability to import a list of venues to the WME
 // @match       https://*.waze.com/*editor*
@@ -19658,6 +19658,7 @@ function uDSV_parse(csvStr, schema, cb, skip = 0, withEOF = true, chunkSize = CH
 
 
 const CSV_HEADERS = [
+    'objectType',
     'venueName',
     'street',
     'city',
