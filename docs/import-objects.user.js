@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name        WME Import Objects
-// @version     1.2.1697569821912
+// @version     1.2.1697651546803
 // @author      r0den
 // @description Adds the ability to import a list of venues to the WME
 // @match       https://*.waze.com/*editor*
@@ -19703,8 +19703,8 @@ function parseCsv(csv) {
         const data = parser.typedObjs(csv);
         return (0,cjs.from)(data);
     }), (0,cjs.map)((columns) => {
-        var _a, _b, _c;
-        return (Object.assign(Object.assign({}, columns), { categories: (_c = (_b = (_a = columns.categories) === null || _a === void 0 ? void 0 : _a.toUpperCase()) === null || _b === void 0 ? void 0 : _b.split) === null || _c === void 0 ? void 0 : _c.call(_b, ',') }));
+        var _a, _b, _c, _d, _e;
+        return (Object.assign(Object.assign({}, columns), { categories: (_e = (_d = (_c = (_b = (_a = columns.categories) === null || _a === void 0 ? void 0 : _a.toUpperCase()) === null || _b === void 0 ? void 0 : _b.split) === null || _c === void 0 ? void 0 : _c.call(_b, ',')) === null || _d === void 0 ? void 0 : _d.map) === null || _e === void 0 ? void 0 : _e.call(_d, (cat) => cat.trim()) }));
     }), (0,cjs.map)((columns) => {
         const projectedPoint = new unsafeWindow.OpenLayers.Geometry.Point(columns.longitude, columns.latitude)
             .transform('EPSG:4326', unsafeWindow.W.map.getOLMap().getProjection());
