@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         WME Compact Closure Directions
-// @version      0.1
+// @version      0.2
 // @description  Use the new compact version of Waze for the direction field in the closures window
 // @author       r0den
 // @include     https://www.waze.com/editor*
@@ -26,10 +26,15 @@
   function createDirectionChip(value, isChecked, beforeLabel, iconName, afterLabel) {
     const chip = createChip(value, isChecked);
     chip.appendChild(document.createTextNode(beforeLabel));
-
+    if (!beforeLabel?.endsWith?.(' ') || !afterLabel.endsWith?.(' ')) {
+      chip.appendChild(document.createTextNode(" "));
+    }
     const icon = document.createElement('i');
     icon.classList.add('w-icon');
     icon.classList.add('w-icon-' + iconName);
+    icon.style.fontSize = '18px';
+    icon.style.marginBottom = '1px';
+    icon.style.verticalAlign = 'middle';
     chip.appendChild(icon);
 
     if (afterLabel) chip.appendChild(document.createTextNode(afterLabel));
@@ -46,6 +51,9 @@
     container.appendChild(label);
 
     const chips = document.createElement('wz-chip-select');
+    chips.style.display = "flex";
+    chips.style.gap = "2px";
+    chips.style.flexWrap = "wrap";
     const appendChip = (value, beforeLabel, iconName, afterLabel) => {
       const selectedValue = directionSelectElement.value;
       const isChecked = selectedValue === value;
@@ -53,8 +61,8 @@
       chips.appendChild(chip);
     };
     appendChip(3, I18n.translate('segment.direction.two_way'), 'arrow-two-way');
-    appendChip(1, 'A', 'arrow-right', 'B');
-    appendChip(2, 'B', 'arrow-right', 'A');
+    appendChip(1, 'A ', 'arrow-right', ' B');
+    appendChip(2, 'B ', 'arrow-right', ' A');
     chips.addEventListener('chipSelected', (e) => {
       const { value } = e.detail;
       directionSelectElement.value = value;
