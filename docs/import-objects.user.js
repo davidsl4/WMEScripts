@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name        WME Import Objects
-// @version     1.2.1697651546803
+// @version     1.2.1698151068136
 // @author      r0den
 // @description Adds the ability to import a list of venues to the WME
 // @match       https://*.waze.com/*editor*
@@ -19690,7 +19690,7 @@ function parseCsv(csv) {
         modifyColumn('street', (col) => (Object.assign(Object.assign({}, col), { type: "s" /* SchemaColumnType.String */ })));
         modifyColumn('city', (col) => (Object.assign(Object.assign({}, col), { type: "s" /* SchemaColumnType.String */ })));
         modifyColumn('state', (col) => (Object.assign(Object.assign({}, col), { type: "s" /* SchemaColumnType.String */ })));
-        modifyColumn('houseNumber', (col) => (Object.assign(Object.assign({}, col), { type: "n" /* SchemaColumnType.Number */ })));
+        modifyColumn('houseNumber', (col) => (Object.assign(Object.assign({}, col), { type: "s" /* SchemaColumnType.String */ })));
         modifyColumn('country', (col) => (Object.assign(Object.assign({}, col), { type: "s" /* SchemaColumnType.String */ })));
         modifyColumn('latitude', (col) => (Object.assign(Object.assign({}, col), { type: "n" /* SchemaColumnType.Number */ })));
         modifyColumn('longitude', (col) => (Object.assign(Object.assign({}, col), { type: "n" /* SchemaColumnType.Number */ })));
@@ -20052,7 +20052,7 @@ function VenueListItem({
 
   const updateFeatureRenderIntent = newIntent => {
     const layer = unsafeWindow.W.map.venueLayer;
-    const feature = layer.featureMap.get(wmeVenueId);
+    const feature = layer.featureMap.get(wmeObject?.getID?.() || wmeVenueId);
     if (!feature || feature.renderIntent === newIntent) return;
     lastUsedRenderIntent.current = feature.renderIntent;
     layer.drawFeature(feature, newIntent);
