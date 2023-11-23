@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name        WME Roundabout Junction Box
-// @version     1.2.1695373838349
+// @version     1.3.1700753140137
 // @author      r0den
 // @description Provide some useful tools for maintaining Junction Boxes
 // @match       https://*.waze.com/*editor*
@@ -8742,12 +8742,14 @@ function generateActionClasses() {
             }
             doAction() {
                 this.bigJunctionAction.initialGeometry = this.bigJunctionAction.bigJunction.attributes.geometry = this.roundaboutGeometry;
+                this.bigJunctionAction.subActions[0].attributes.geoJSONGeometry = unsafeWindow.W.userscripts.toGeoJSONGeometry(this.roundaboutGeometry);
                 this._changeFeatureGeometry(this.roundaboutGeometry);
                 this.doCallback();
                 return true;
             }
             undoAction() {
                 this.bigJunctionAction.initialGeometry = this.bigJunctionAction.bigJunction.attributes.geometry = this.previousGeometry;
+                this.bigJunctionAction.subActions[0].attributes.geoJSONGeometry = unsafeWindow.W.userscripts.toGeoJSONGeometry(this.previousGeometry);
                 this._changeFeatureGeometry(this.previousGeometry);
                 this.undoCallback();
                 return true;
