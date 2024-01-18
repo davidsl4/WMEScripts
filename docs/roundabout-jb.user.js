@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name        WME Roundabout Junction Box
-// @version     1.3.1700753140137
+// @version     1.3.1705615391516
 // @author      r0den
 // @description Provide some useful tools for maintaining Junction Boxes
 // @match       https://*.waze.com/*editor*
@@ -8951,9 +8951,15 @@ window.proxyMethod = function proxyMethod(method, handler, runOriginalBefore, ge
         };
     })();
     console.log("[Roundabout JB] Loading script");
-    while (!unsafeWindow.hasOwnProperty("require") || !unsafeWindow.W || !unsafeWindow.W.app || unsafeWindow.W.app.attributes.loading) {
-        yield new Promise(resolve => setTimeout(resolve, 100));
-    }
+    yield new Promise((resolve) => {
+        var _a, _b, _c, _d, _e, _f;
+        if (((_c = (_b = (_a = unsafeWindow.W) === null || _a === void 0 ? void 0 : _a.userscripts) === null || _b === void 0 ? void 0 : _b.state) === null || _c === void 0 ? void 0 : _c.isInitialized) && ((_f = (_e = (_d = unsafeWindow.W) === null || _d === void 0 ? void 0 : _d.loginManager) === null || _e === void 0 ? void 0 : _e.isLoggedIn) === null || _f === void 0 ? void 0 : _f.call(_e)))
+            resolve(undefined);
+        else
+            document.addEventListener('wme-logged-in', () => {
+                resolve(undefined);
+            }, { once: true });
+    });
     if (!(yield checkIfAllowedToUseScript())) {
         // log that the user is not allowed to use the script
         console.log("[Roundabout JB] You aren't allowed to use the script");
