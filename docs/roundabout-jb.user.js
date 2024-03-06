@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name        WME Roundabout Junction Box
-// @version     1.3.1705615391516
+// @version     1.3.1709753938501
 // @author      r0den
 // @description Provide some useful tools for maintaining Junction Boxes
 // @match       https://*.waze.com/*editor*
@@ -7461,7 +7461,7 @@ const getPrefsSidebarTab = (() => {
 let uniqueNameIncrementer = 0;
 
 function uniqueControlName(key) {
-  return `${script_key}-${key}-${++uniqueNameIncrementer}`;
+  return `${modules_script_key}-${key}-${++uniqueNameIncrementer}`;
 }
 
 const scriptPrefsStorage = (() => {
@@ -7871,10 +7871,8 @@ function getAllTurnsInJunctionBox(jb, jbSegments) {
 
 ;// CONCATENATED MODULE: ./src/utils/selection.ts
 function getWazeObjectFromSelection(selection) {
-    if (selection.attributes.repositoryObject)
-        return selection.attributes.repositoryObject;
-    if (selection.attributes.wazeFeature._wmeObject)
-        return selection.attributes.wazeFeature._wmeObject;
+    if (selection._wmeObject)
+        return selection._wmeObject;
     return null;
 }
 
@@ -7927,9 +7925,8 @@ function afterActionCallback({
   }
 }
 
-function selectedFeaturesChangedCallback({
-  selected
-}) {
+function selectedFeaturesChangedCallback(event) {
+  const selected = event.detail.selected;
   resetTransformRoundaboutButtonDisabledState(); // if no selected features, then we don't need to do anything
 
   if (selected.length == 0) return; // check if the selected model type is bigJunction
@@ -8044,9 +8041,8 @@ function getJunctionBoxData(jb) {
   };
 }
 
-function jb_cloner_selectedFeaturesChangedCallback({
-  selected
-}) {
+function jb_cloner_selectedFeaturesChangedCallback(event) {
+  const selected = event.detail.selected;
   resetCopyState();
   resetPasteState(); // if no selected features, then we don't need to do anything
 
@@ -8171,7 +8167,7 @@ function renderDOMButtons(canCloneResult, canPasteResult, onCloneClick, onPasteC
       color: "secondary",
       ref: cloneWrapperRef,
       refKey: "button",
-      className: "action-button waze-btn waze-btn-smaller waze-btn-white disabled-events " + script_key,
+      className: "action-button waze-btn waze-btn-smaller waze-btn-white disabled-events " + modules_script_key,
       disabled: canCloneResult !== CanJunctionBoxBeCloned.Yes,
       onClick: onCloneClick
     }, I18n.translate("edit.big_junction.clone.copy"))), jsxCreateElement("div", {
@@ -8183,7 +8179,7 @@ function renderDOMButtons(canCloneResult, canPasteResult, onCloneClick, onPasteC
       color: "secondary",
       ref: pasteWrapperRef,
       refKey: "button",
-      className: "action-button waze-btn waze-btn-smaller waze-btn-white disabled-events " + script_key,
+      className: "action-button waze-btn waze-btn-smaller waze-btn-white disabled-events " + modules_script_key,
       disabled: canPasteResult !== CanJunctionBoxBePasted.Yes,
       onClick: onPasteClick
     }, I18n.translate("edit.big_junction.clone.paste")))));
@@ -8237,7 +8233,7 @@ function renderDOMButtons(canCloneResult, canPasteResult, onCloneClick, onPasteC
 
 let previouslyInitialized = false;
 function getCSSName(className) {
-    return `${script_key}-${className}`;
+    return `${modules_script_key}-${className}`;
 }
 function initialize() {
     if (previouslyInitialized)
@@ -8250,11 +8246,11 @@ function initialize() {
             margin-top: 4px;
         }
 
-        wz-button.${script_key} {
+        wz-button.${modules_script_key} {
             outline: none;
         }
 
-        wz-button.${script_key}.disabled-events[disabled]:not([disabled=false]) {
+        wz-button.${modules_script_key}.disabled-events[disabled]:not([disabled=false]) {
             pointer-events: none !important;
         }
     `;
@@ -8467,10 +8463,10 @@ function convertAnglesToInstructions(turns) {
     const uTurnData = turns.uTurn.sort((a, b) => Math.abs(a.angle) - Math.abs(b.angle))[0];
     // add to each turn it's instruction
     // for the turns above the instruction will be the instruction, for others it will be the number of exits
-    turns.right.forEach(turn => turn[`${script_key}`].instruction = rightTurnData === turn ? RoundaboutTurnInstructions.Right : RoundaboutTurnInstructions.LetWazeCountExits);
-    turns.continue.forEach(turn => turn[`${script_key}`].instruction = continueTurnData === turn ? RoundaboutTurnInstructions.Continue : RoundaboutTurnInstructions.LetWazeCountExits);
-    turns.left.forEach(turn => turn[`${script_key}`].instruction = leftTurnData === turn ? RoundaboutTurnInstructions.Left : RoundaboutTurnInstructions.LetWazeCountExits);
-    turns.uTurn.forEach(turn => turn[`${script_key}`].instruction = uTurnData === turn ? RoundaboutTurnInstructions.UTurn : RoundaboutTurnInstructions.LetWazeCountExits);
+    turns.right.forEach(turn => turn[`${modules_script_key}`].instruction = rightTurnData === turn ? RoundaboutTurnInstructions.Right : RoundaboutTurnInstructions.LetWazeCountExits);
+    turns.continue.forEach(turn => turn[`${modules_script_key}`].instruction = continueTurnData === turn ? RoundaboutTurnInstructions.Continue : RoundaboutTurnInstructions.LetWazeCountExits);
+    turns.left.forEach(turn => turn[`${modules_script_key}`].instruction = leftTurnData === turn ? RoundaboutTurnInstructions.Left : RoundaboutTurnInstructions.LetWazeCountExits);
+    turns.uTurn.forEach(turn => turn[`${modules_script_key}`].instruction = uTurnData === turn ? RoundaboutTurnInstructions.UTurn : RoundaboutTurnInstructions.LetWazeCountExits);
     return turns;
 }
 function getRoundaboutAngles(turns) {
@@ -8498,7 +8494,7 @@ function getRoundaboutAngles(turns) {
             x2: toSegmentGeometryJoint2.x,
             y2: toSegmentGeometryJoint2.y
         };
-        turn[`${script_key}`] = {
+        turn[`${modules_script_key}`] = {
             angle: Math.abs(calculateAngleBetween2Lines(fromLine, toLine))
         };
     }
@@ -8569,12 +8565,12 @@ function NormalizeTurns(turns, jb, node) {
     // for each turn set the script_key.exit to the exit number
     // determine the exit number by sorting them by the segmentPath, and then their index will be the exit number
     [...turns].sort((a, b) => a.turnData.segmentPath.length - b.turnData.segmentPath.length).forEach((turn, index) => {
-        turn[script_key].exit = index + 1;
+        turn[modules_script_key].exit = index + 1;
     });
     // right angle 45-135 | continue 135-225 | left 225 - 315 | uTurn 315-45
     // group the turns by angle
     const groupedTurns = turns.reduce((acc, turn) => {
-        const angle = turn[`${script_key}`].angle;
+        const angle = turn[`${modules_script_key}`].angle;
         let arr;
         if (angle >= 45 && angle < 135)
             arr = acc.right;
@@ -8590,16 +8586,19 @@ function NormalizeTurns(turns, jb, node) {
     convertAnglesToInstructions(groupedTurns);
     // generate new turn instructions
     const allInstructedTurns = [
-        ...groupedTurns.right.map((turn) => turn.withTurnData(turn.turnData.withInstructionOpcode(RoundaboutTurnInstructionsOpcodes[turn[`${script_key}`].instruction]))),
-        ...groupedTurns.continue.map((turn) => turn.withTurnData(turn.turnData.withInstructionOpcode(RoundaboutTurnInstructionsOpcodes[turn[`${script_key}`].instruction]))),
-        ...groupedTurns.left.map((turn) => turn.withTurnData(turn.turnData.withInstructionOpcode(RoundaboutTurnInstructionsOpcodes[turn[`${script_key}`].instruction]))),
-        ...groupedTurns.uTurn.map((turn) => turn.withTurnData(turn.turnData.withInstructionOpcode(RoundaboutTurnInstructionsOpcodes[turn[`${script_key}`].instruction])))
+        ...groupedTurns.right.map((turn) => turn.withTurnData(turn.turnData.withInstructionOpcode(RoundaboutTurnInstructionsOpcodes[turn[`${modules_script_key}`].instruction]))),
+        ...groupedTurns.continue.map((turn) => turn.withTurnData(turn.turnData.withInstructionOpcode(RoundaboutTurnInstructionsOpcodes[turn[`${modules_script_key}`].instruction]))),
+        ...groupedTurns.left.map((turn) => turn.withTurnData(turn.turnData.withInstructionOpcode(RoundaboutTurnInstructionsOpcodes[turn[`${modules_script_key}`].instruction]))),
+        ...groupedTurns.uTurn.map((turn) => turn.withTurnData(turn.turnData.withInstructionOpcode(RoundaboutTurnInstructionsOpcodes[turn[`${modules_script_key}`].instruction])))
     ];
     unsafeWindow.W.model.actionManager.add(new NormalizeRoundaboutTurns(allInstructedTurns, node));
-    const arrowsContainer = getAllTurnsArrowContainers();
-    [...groupedTurns.right, ...groupedTurns.continue, ...groupedTurns.left, ...groupedTurns.uTurn].forEach((turn) => injectRoundaboutTurnInstructionsBadge(turn, 
-    // (450 - jb.getAngleAtIntersection(unsafeWindow.W.model.segments.getObjectById(turn.toVertex.getSegmentID()).geometry)) % 360,
-    arrowsContainer, turn[script_key].exit));
+    // const arrowsContainer = getAllTurnsArrowContainers();
+    // [...groupedTurns.right, ...groupedTurns.continue, ...groupedTurns.left, ...groupedTurns.uTurn].forEach((turn: any) => injectRoundaboutTurnInstructionsBadge(
+    //         turn, 
+    //         // (450 - jb.getAngleAtIntersection(unsafeWindow.W.model.segments.getObjectById(turn.toVertex.getSegmentID()).geometry)) % 360,
+    //         arrowsContainer,
+    //         turn[script_key].exit
+    // ));
 }
 function injectBadgesCSStoDOM() {
     /*
@@ -8661,7 +8660,7 @@ function domNormalizeButton(nodeName, onClick, canNormalizeResult) {
     if (tooltipLabel)
         tooltip(tooltipWrapper);
     const button = document.createElement("wz-button");
-    button.className = `disabled-events ${script_key}`;
+    button.className = `disabled-events ${modules_script_key}`;
     button.color = "text";
     button.size = "sm";
     button.innerText = I18n.translate("edit.roundabout.normalize_turns_at", {
@@ -8673,7 +8672,8 @@ function domNormalizeButton(nodeName, onClick, canNormalizeResult) {
     return tooltipWrapper;
 }
 let previousCustomButtonsContainer = null;
-function onWmeSelectionChanged({ selected }) {
+function onWmeSelectionChanged(event) {
+    const selected = event.detail.selected;
     const segmentFeatures = selected.filter((f) => getWazeObjectFromSelection(f).type === 'segment');
     const segments = segmentFeatures.map((f) => getWazeObjectFromSelection(f));
     const { canNormalize, normalizeA, normalizeB, canNormalizeA, canNormalizeB } = getTurnsNormalizer(segments);
@@ -8712,7 +8712,7 @@ function onWmeSelectionChanged({ selected }) {
     prefs();
     normalizeRoundaboutTurns();
 }
-const script_key = "ejCZYwCQJb";
+const modules_script_key = "ejCZYwCQJb";
 
 ;// CONCATENATED MODULE: ./src/Actions/index.ts
 function generateActionClasses() {
@@ -8785,13 +8785,13 @@ function generateActionClasses() {
             getFocusFeatures() {
                 return [this.bigJunction];
             }
-            doAction() {
-                return super.doAction() && (this.updateJbPastedValue(true), true);
+            doAction(model) {
+                return super.doAction(model) && (this.updateJbPastedValue(true), true);
             }
-            undoAction() {
+            undoAction(model) {
                 if (super.undoSupported())
-                    super.undoAction();
-                this.subActions.forEach(subAction => subAction.undoAction());
+                    super.undoAction(model);
+                this.subActions.forEach(subAction => subAction.undoAction(model));
                 this.updateJbPastedValue(this.prevJbPastedValue);
             }
             setModel(model) {
