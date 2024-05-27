@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name WME Suggestion Assist
 // @description Visualize handled "Suggestion Edits" in Waze Map Editor
-// @version 1.0.0-rc1
+// @version 1.0.0-beta
 // @author r0den
 // @match https://*.waze.com/*editor*
 // @match https://waze.com/*editor*
