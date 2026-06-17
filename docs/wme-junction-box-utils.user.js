@@ -11,7 +11,7 @@
 // @grant GM_getValue
 // @grant GM_deleteValue
 // @grant GM_xmlhttpRequest
-// @require https://cdn.jsdelivr.net/gh/WazeSpace/wme-sdk-plus@v1.3/wme-sdk-plus.js
+// @require https://cdn.jsdelivr.net/gh/WazeSpace/wme-sdk-plus@v1.4/wme-sdk-plus.js
 // ==/UserScript==
 
 /*! For license information please see wme-junction-box-utils.user.js.LICENSE.txt */
